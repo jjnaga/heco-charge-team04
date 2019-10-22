@@ -1,5 +1,6 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
+import Maps from "./Maps";
 import '../css/App.css';
 
 class App extends React.Component {
@@ -13,15 +14,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App" style={{ height: '100vh', width: '100%' }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyCiaKYomT-1e-Pe1l_D6cRDvwXsxCEhu-I" }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
-        >
-          <div>hi</div>
-        </GoogleMapReact>
-      </div >
+      <Maps center={this.props.center} zoom={this.props.zoom} />
     );
   }
 }
