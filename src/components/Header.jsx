@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-const Station = () => {
+const Header = () => {
   return (
     <button>
       Station
@@ -9,11 +9,11 @@ const Station = () => {
   )
 }
 
-Station.propTypes = {
+Header.propTypes = {
   center: PropTypes.exact({
     lat: PropTypes.number,
     lng: PropTypes.number,
   })
 }
 
-export default Station;
+export default Header;

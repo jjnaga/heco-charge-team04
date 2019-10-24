@@ -21,7 +21,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <Station />
+        <Header />
         <Maps
           center={this.props.center}
           zoom={this.props.zoom}
