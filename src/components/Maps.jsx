@@ -13,6 +13,7 @@ class Maps extends React.Component {
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
         >
+
         </GoogleMapReact>
       </div >
     )
@@ -25,6 +26,7 @@ Maps.propTypes = {
     lng: PropTypes.number,
   }).isRequired,
   zoom: PropTypes.number.isRequired,
+  stations: PropTypes.array.isRequired,
 }
 
 export default Maps;
