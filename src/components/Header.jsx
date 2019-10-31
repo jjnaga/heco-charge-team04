@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-const Header = () => {
-  return (
-    <button>
-      Station
-    </button>
-  )
+class Header extends React.Component {
+  render() {
+
+
+    return (
+      <div className="header">
+        <h1>HECO</h1>
+      </div>
+    )
+  }
 }
 
 Header.propTypes = {
@@ -15,5 +19,6 @@ Header.propTypes = {
     lng: PropTypes.number,
   })
 }
+
 
 export default Header;

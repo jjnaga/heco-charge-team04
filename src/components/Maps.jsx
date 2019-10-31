@@ -1,26 +1,28 @@
 import React from "react";
 import GoogleMapReact from 'google-map-react';
-import Station from "./Station";
 import PropTypes from 'prop-types';
+
 
 class Maps extends React.Component {
   render() {
-    const { center, zoom, stations } = this.props;
-
-    const items = [];
-
-    for (const [index, value] of stations.entries()) {
-      items.push(<Station lat={value.lat} lng={value.lng}></Station>)
-    }
-
+    const { center, zoom, stations, handler } = this.props;
+    console.log(handler);
     return (
-      <div className="map" style={{ height: '100vh', width: '100%' }}>
+      <div className="map" style={{ height: '100vh', width: "100vw", position: "relative" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyCiaKYomT-1e-Pe1l_D6cRDvwXsxCEhu-I" }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          defaultCenter={center}
+          defaultZoom={zoom}
         >
-          {items}
+          {stations.stations.map((station, index) => (
+            <div
+              key={index}
+              lat={station.lat}
+              lng={station.lng}
+            >
+              {<button onClick={() => handler(station.station)}>{station.station}</button>}
+            </div>
+          ))}
         </GoogleMapReact>
       </div >
     )
@@ -33,7 +35,8 @@ Maps.propTypes = {
     lng: PropTypes.number,
   }).isRequired,
   zoom: PropTypes.number.isRequired,
-  stations: PropTypes.array.isRequired,
+  stations: PropTypes.object.isRequired,
+  handler: PropTypes.func.isRequired,
 }
 
 export default Maps;

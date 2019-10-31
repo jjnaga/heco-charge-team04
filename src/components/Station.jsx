@@ -1,19 +1,16 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-const Station = () => {
+const Station = (name) => {
   return (
     <button>
-      Station
+      {name}
     </button>
   )
 }
 
 Station.propTypes = {
-  center: PropTypes.exact({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  })
+  //stationName: PropTypes.string.isRequired
 }
 
 export default Station;
