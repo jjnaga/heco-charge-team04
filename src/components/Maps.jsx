@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 class Maps extends React.Component {
   render() {
     const { center, zoom, stations, handler } = this.props;
-    console.log(handler);
     return (
       <div className="map" style={{ height: '100vh', width: "100vw", position: "relative" }}>
         <GoogleMapReact
@@ -19,6 +18,7 @@ class Maps extends React.Component {
               key={index}
               lat={station.lat}
               lng={station.lng}
+              hover={"false"}
             >
               {<button onClick={() => handler(station.station)}>{station.station}</button>}
             </div>

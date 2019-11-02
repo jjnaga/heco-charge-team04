@@ -6,17 +6,23 @@ import React, { Component } from 'react';
 import Maps from "./Maps";
 import Overview from "./Overview";
 import '../css/App.css';
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+
+const client = new ApolloClient({
+  uri: "https://charge-data.herokuapp.com/v1/graphql"
+});
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       center: {
-        lat: 21.45,
-        lng: -157.80
+        lat: 21.475,
+        lng: -158.10
       },
-      zoom: 10,
-      location: "kalihi",
+      zoom: 11,
+      location: "Kalihi",
     }
     this.updateCurrentOverviewLocation = this.updateCurrentOverviewLocation.bind(this);
   }
@@ -33,7 +39,7 @@ class App extends Component {
     const { location, center, zoom } = this.state;
 
     return (
-      <div id="container">
+      <ApolloProvider client={client}>
         <Maps
           center={center}
           zoom={zoom}
@@ -41,7 +47,7 @@ class App extends Component {
           handler={this.updateCurrentOverviewLocation}
         />
         <Overview location={location} />
-      </div>
+      </ApolloProvider >
     );
   }
 }
