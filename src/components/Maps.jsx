@@ -1,23 +1,48 @@
 import React from "react";
 import GoogleMapReact from 'google-map-react';
-import PropTypes from 'prop-types';
+import { useQuery } from "urql";
 import gql from "graphql-tag";
-import Station from "./Station.jsx";
-import { Query } from "react-apollo";
 
-class Maps extends React.Component {
-  render() {
-    const { center, zoom, stations, handler } = this.props;
+// const Maps = (center, zoom) => (
 
-    const [result] = useQuery({
-      query: `{stations: {
-        name,
-        latitude,
-        longitude,
-      }}`,
-    })
+//   {
+//       < Query query = { getStations } >
+//     {({ fetching, data, error }) => {
+//   if (fetching) {
+//     return "Loading";
+//   }
+//   else if (error) {
+//     return error;
+//   }
 
+//   return (
+//     <div class="buttons">
+//       {data.stations.map(({ latitude, longitude, name }) => (
+//         <button lat={latitude} lng={longitude} name={name}>{name}</button>
+//       ))}
+//     </div>
+//   )
+// }
+//         }
+//       </Query >
+//     }
+//   </GoogleMapReact >
+// )
 
+const Maps = ({ center, zoom, handler }) => {
+  const [res] = useQuery({
+    query: `{stations {latitude, longitude, name}}`,
+  });
+
+  const { fetching, error, data } = res;
+  if (fetching) {
+    return "Loading";
+  } else if (error) {
+    console.log(`Error Message: ${error}`);
+    return "Error";
+  }
+  else {
+    console.log(data);
     return (
       <div className="map" style={{ height: '100vh', width: "100vw", position: "relative" }}>
         <GoogleMapReact
@@ -25,19 +50,15 @@ class Maps extends React.Component {
           defaultCenter={center}
           defaultZoom={zoom}
         >
+          {
+            data.stations.map(data => (
+              <button lat={data.latitude} lng={data.longitude}>{data.name}</button>
+            ))
+          }
         </GoogleMapReact>
-      </div >
+      </div>
     )
   }
-}
-
-Maps.propTypes = {
-  center: PropTypes.exact({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
-  }).isRequired,
-  zoom: PropTypes.number.isRequired,
-  handler: PropTypes.func.isRequired,
 }
 
 export default Maps;

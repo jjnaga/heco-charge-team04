@@ -1,16 +1,18 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-const Station = (name) => {
+const Station = (stations) => {
+
+  console.log(stations);
+
   return (
-    <button>
-      {name}
-    </button>
+    <div>
+    </div>
   )
 }
 
 Station.propTypes = {
-  //stationName: PropTypes.string.isRequired
+
 }
 
 export default Station;

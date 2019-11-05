@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import './css/index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import { Provider, createClient } from "urql";
+import { createClient, Provider, defaultExchanges } from "urql";
 
-const client = createClient {
-  uri: "https://charge-data.herokuapp.com/v1/graphql",
+
+const client = createClient({
+  url: "https://charge-data.herokuapp.com/v1/graphql",
+  exchanges: defaultExchanges
 });
 
 ReactDOM.render(<Provider value={client}><App /></Provider>, document.getElementById('root'));

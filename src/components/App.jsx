@@ -16,7 +16,7 @@ class App extends Component {
         lng: -158.10
       },
       zoom: 11,
-      location: "Kalihi",
+      location: "",
     }
     this.updateCurrentOverviewLocation = this.updateCurrentOverviewLocation.bind(this);
   }
