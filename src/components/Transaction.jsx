@@ -3,11 +3,20 @@ import { Container, Message, Progress, Header, Item, Button } from "semantic-ui-
 import PropTypes from 'prop-types';
 import styled from "styled-components";
 
-const Transaction = (energy, duration, amount, starttime, endtime) => {
+
+const Transaction = ({ starttime, energy }) => {
+  console.log(starttime);
+  console.log(energy);
   return (
-    <Message>
-      <Message.Header>{energy}</Message.Header>
-    </Message>
+    <div>
+      <Item>
+        <Item.Image size='tiny' src='#' />
+        <Item.Content>
+          <Item.Header as='a'>{starttime}</Item.Header>
+          <Item.Meta>Energy: {energy}</Item.Meta>
+        </Item.Content>
+      </Item>
+    </div>
   );
 }
 

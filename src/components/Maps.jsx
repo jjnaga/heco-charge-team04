@@ -1,7 +1,6 @@
 import React from "react";
 import GoogleMapReact from 'google-map-react';
 import { useQuery } from "urql";
-import gql from "graphql-tag";
 
 // const Maps = (center, zoom) => (
 
@@ -30,6 +29,12 @@ import gql from "graphql-tag";
 // )
 
 const Maps = ({ center, zoom, handler }) => {
+
+  const sendLocation = (name) => {
+    console.log("working");
+    handler(name);
+  }
+
   const [res] = useQuery({
     query: `{stations {latitude, longitude, name}}`,
   });
@@ -42,8 +47,11 @@ const Maps = ({ center, zoom, handler }) => {
     return "Error";
   }
   else {
-    console.log(data);
     return (
+      // TODO 11/5: we can't iterate components as far as I can tell, and this sucks.
+      // TODO 11/5: nvm we can, we just need to wrap child component paramater in an object
+      // FROM: const App = (name) =>
+      // TO:   const App = ({name}) =>
       <div className="map" style={{ height: '100vh', width: "100vw", position: "relative" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyCiaKYomT-1e-Pe1l_D6cRDvwXsxCEhu-I" }}
@@ -51,12 +59,19 @@ const Maps = ({ center, zoom, handler }) => {
           defaultZoom={zoom}
         >
           {
-            data.stations.map(data => (
-              <button lat={data.latitude} lng={data.longitude}>{data.name}</button>
+            data.stations.map((data, index) => (
+              <button
+                key={index}
+                lat={data.latitude}
+                lng={data.longitude}
+                onClick={() => sendLocation(data.name)}
+              >
+                {data.name}
+              </button>
             ))
           }
         </GoogleMapReact>
-      </div>
+      </div >
     )
   }
 }

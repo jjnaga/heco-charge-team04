@@ -1,0 +1,4 @@
+Create lamda in CLI
+aws lambda create-function --function-name checkNewInsert --zip-file fileb://lamdaFunc.zip --handler index.handler --runtime nodejs10.x --role arn:aws:iam::990574160153:role/lambda-cli-role
+aws lambda create-function --function-name getStationData --zip-file fileb://archive.zip --handler index.handler --runtime nodejs10.x --role arn:aws:iam::990574160153:role/lambda-cli-role
+

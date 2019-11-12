@@ -11,6 +11,7 @@ const client = createClient({
   exchanges: defaultExchanges
 });
 
+
 ReactDOM.render(<Provider value={client}><App /></Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
