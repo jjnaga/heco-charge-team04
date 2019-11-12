@@ -1,11 +1,10 @@
-import React from 'react';
-import styled from "styled-components";
-import { Popup, Progress, Header, Button, Item } from "semantic-ui-react";
-import PropTypes from 'prop-types';
-import { useQuery } from "urql";
+import React from "react"
+import styled from "styled-components"
+import { Item } from "semantic-ui-react"
+import { useQuery } from "urql"
+import { gql } from "../utils"
 
-
-const getReconcileData = `
+const getReconcileData = gql`
   query MyQuery {
     chargedata_reconcile {
       amount
@@ -22,32 +21,35 @@ const getReconcileData = `
       station
     }
   }
-`;
+`
 
-const Reconcilliation = ({ toggle }) => {
-  const [{ fetching, error, data }] = useQuery({ query: getReconcileData });
-  if (fetching) return "Fetching";
+// Old
+const _Reconcilliation = ({ toggle }) => {
+  const [{ fetching, error, data }] = useQuery({ query: getReconcileData })
+
+  // Same as before.
+  if (fetching) return "Fetching"
   else if (error) {
-    console.log(error);
-    return "error";
-  }
-
-  else {
-    let reconcileData = data.chargedata_reconcile;
-    console.log(reconcileData);
+    console.log(error)
+    return "error"
+  } else {
+    let reconcileData = data.chargedata_reconcile
+    console.log(reconcileData)
 
     return (
-      <Container className="reconcile" >
+      <Container className="reconcile">
         <Item.Group divided>
           {reconcileData.map(row => {
-            let { station, duration, starttime, endtime, energy, id } = row;
-            starttime = new Date(starttime);
-            console.log(starttime);
-            console.log(typeof starttime);
+            // Same as before:
+            let { station, duration, starttime, endtime, energy, id } = row
+
+            // Same as before, just assign a new variable
+            starttime = new Date(starttime)
+
             return (
               <Item>
                 <Item.Content>
-                  <Item.Header as='a'>{station}</Item.Header>
+                  <Item.Header as="a">{station}</Item.Header>
                   <Item.Meta>{`${starttime.toLocaleString()}`}</Item.Meta>
                 </Item.Content>
               </Item>
@@ -59,14 +61,34 @@ const Reconcilliation = ({ toggle }) => {
   }
 }
 
-// const ExitContainer = styled.div`
-//   margin-left: auto;
-// `;
+// New
+const Reconcilliation = ({ toggle }) => {
+  const [{ fetching, error, data }] = useQuery({ query: getReconcileData })
 
-// const Header = styled.div`
-//   display: flex;
-//   width: 100%;
-// `;
+  // Same as before.
+  if (fetching) return "Fetching"
+  if (error) return "error"
+
+  return (
+    <Container className="reconcile">
+      <Item.Group divided>
+        {data.chargedata_reconcile.map(row => {
+          const { station, starttime, id } = row
+          const startDate = new Date(starttime)
+
+          return (
+            <Item key={id}>
+              <Item.Content>
+                <Item.Header as="a">{station}</Item.Header>
+                <Item.Meta>{startDate.toLocaleString()}</Item.Meta>
+              </Item.Content>
+            </Item>
+          )
+        })}
+      </Item.Group>
+    </Container>
+  )
+}
 
 const Container = styled.div`
   margin: 25px;
@@ -78,11 +100,9 @@ const Container = styled.div`
   background: white;
   border-radius: 20px;
 
-
   // flexbox
   display: flex;
   flex-direction: column;
-`;
+`
 
-
-export default Reconcilliation;
+export default Reconcilliation

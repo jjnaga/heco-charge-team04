@@ -1,62 +1,48 @@
-import React from 'react';
-import styled from "styled-components";
+import React, { useState } from "react"
+import styled from "styled-components"
 
-
-// const getReconcileData = `
-//   query MyQuery {
-//     chargedata_reconcile {
-//       amount
-//       duration
-//       endtime
-//       energy
-//       id
-//       input
-//       inputdate
-//       payment
-//       port
-//       session
-//       starttime
-//       station
-//     }
-//   }
-// `;
-
-class Chart extends React.Component {
+// old
+class _Chart extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      station: 'test',
-      start: 'mm/dd/yyyy hh:mm:ss',
-      end: '',
-      out: ''
-    };
+      station: "test",
+      start: "mm/dd/yyyy hh:mm:ss",
+      end: "",
+      out: ""
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
     //will update and refresh the class props live
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmit(event) {
-    alert('date: ' + this.state.station + " "
-      + this.state.start + " "
-      + this.state.end);
-    event.preventDefault();
+    alert(
+      "date: " +
+        this.state.station +
+        " " +
+        this.state.start +
+        " " +
+        this.state.end
+    )
+    event.preventDefault()
     //builds input statement for R script
     this.setState({
       out: `
     Station: \"${this.state.station}\"
     Start date: \"${this.state.start}\"
     End date: \"${this.state.end}\"
-    `});
+    `
+    })
   }
 
   // console.log(data);
   render() {
-
     return (
       <Container>
         <form onSubmit={this.handleSubmit}>
@@ -74,34 +60,80 @@ class Chart extends React.Component {
           {this.state.out}
         </form>
       </Container>
-    );
+    )
   }
 }
 
+// New
+const Chart = () => {
+  const [state, setState] = useState({
+    station: "test",
+    start: "mm/dd/yyyy hh:mm:ss",
+    end: ""
+  })
 
-// const ExitContainer = styled.div`
-//   margin-left: auto;
-// `;
+  const handleChange = event => {
+    setState(prevState => ({
+      ...prevState,
+      [event.target.name]: event.target.value
+    }))
+  }
 
-// const Header = styled.div`
-//   display: flex;
-//   width: 100%;
-// `;
+  const handleSubmit = event => {
+    event.preventDefault()
+
+    // Build escaped string for R script
+    const escapedString = JSON.stringify(state)
+
+    // TODO: Send this escapedString to your R server.
+  }
+
+  return (
+    <Container>
+      <form onSubmit={handleSubmit}>
+        <InputGroup>
+          <label>station</label>
+          <input type="text" name="station" onChange={handleChange} />
+        </InputGroup>
+
+        <InputGroup>
+          <label>start</label>
+          <input type="text" name="start" onChange={handleChange} />
+        </InputGroup>
+
+        <InputGroup>
+          <label>end</label>
+          <input type="text" name="end" onChange={handleChange} />
+        </InputGroup>
+
+        <input type="submit" value="Submit" />
+      </form>
+    </Container>
+  )
+}
 
 const Container = styled.div`
-          margin: 25px;
-          padding: 10px;
-          height: 95vh;
-          top: 0;
-          z-index: 1;
-          background: white;
-          border-radius: 20px;
-        
-        
-          // flexbox
-          display: flex;
-          flex-direction: column;
-        `;
+  margin: 25px;
+  padding: 10px;
+  height: 95vh;
+  top: 0;
+  z-index: 1;
+  background: white;
+  border-radius: 20px;
 
+  // flexbox
+  display: flex;
+  flex-direction: column;
+`
 
-export default Chart;
+// Some basic styles instead of using <br /> tags.
+const InputGroup = styled.div`
+  display: block;
+  margin-bottom: 1rem;
+
+  label {
+    margin-right: 1rem;
+  }
+`
+
+export default Chart
