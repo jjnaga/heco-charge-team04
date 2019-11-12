@@ -68,14 +68,14 @@ const query = gql`
 
 // Refactored version
 const Maps = ({ center, zoom, handler }) => {
-  const [res] = useQuery({
+  const [{ fetching, error, data }] = useQuery({
     query
   })
 
   const sendLocation = name => handler(name)
 
-  if (res.fetching) return "Loading"
-  if (res.error) return "Error"
+  if (fetching) return "Loading"
+  if (error) return "Error"
 
   return (
     <div
@@ -87,7 +87,7 @@ const Maps = ({ center, zoom, handler }) => {
         defaultCenter={center}
         defaultZoom={zoom}
       >
-        {res.data.stations.map((data, index) => (
+        {data.stations.map((data, index) => (
           <button
             key={index}
             lat={data.latitude}
