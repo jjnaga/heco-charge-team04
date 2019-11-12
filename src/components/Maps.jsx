@@ -1,79 +1,105 @@
-import React from "react";
-import GoogleMapReact from 'google-map-react';
-import { useQuery } from "urql";
+import React from "react"
+import GoogleMapReact from "google-map-react"
+import { useQuery } from "urql"
 
-// const Maps = (center, zoom) => (
+import { gql } from "../utils"
 
-//   {
-//       < Query query = { getStations } >
-//     {({ fetching, data, error }) => {
-//   if (fetching) {
-//     return "Loading";
-//   }
-//   else if (error) {
-//     return error;
-//   }
-
-//   return (
-//     <div class="buttons">
-//       {data.stations.map(({ latitude, longitude, name }) => (
-//         <button lat={latitude} lng={longitude} name={name}>{name}</button>
-//       ))}
-//     </div>
-//   )
-// }
-//         }
-//       </Query >
-//     }
-//   </GoogleMapReact >
-// )
-
-const Maps = ({ center, zoom, handler }) => {
-
-  const sendLocation = (name) => {
-    console.log("working");
-    handler(name);
+// Old version
+const _Maps = ({ center, zoom, handler }) => {
+  const sendLocation = name => {
+    console.log("working")
+    handler(name)
   }
 
+  // While not required, it's best practice to place React hooks as high as
+  // possible in the component definition.
   const [res] = useQuery({
-    query: `{stations {latitude, longitude, name}}`,
-  });
+    query: `{stations {latitude, longitude, name}}`
+  })
 
-  const { fetching, error, data } = res;
+  const { fetching, error, data } = res
+  // Because you are returning in your conditions,
+  // you don't need to use an else.
+  // When possible, keep your branching as flat and simple as they
+  // can be.
   if (fetching) {
-    return "Loading";
+    return "Loading"
   } else if (error) {
-    console.log(`Error Message: ${error}`);
-    return "Error";
-  }
-  else {
+    console.log(`Error Message: ${error}`)
+    return "Error"
+  } else {
     return (
-      // TODO 11/5: we can't iterate components as far as I can tell, and this sucks.
-      // TODO 11/5: nvm we can, we just need to wrap child component paramater in an object
-      // FROM: const App = (name) =>
-      // TO:   const App = ({name}) =>
-      <div className="map" style={{ height: '100vh', width: "100vw", position: "relative" }}>
+      <div
+        className="map"
+        style={{ height: "100vh", width: "100vw", position: "relative" }}
+      >
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyCiaKYomT-1e-Pe1l_D6cRDvwXsxCEhu-I" }}
           defaultCenter={center}
           defaultZoom={zoom}
         >
-          {
-            data.stations.map((data, index) => (
-              <button
-                key={index}
-                lat={data.latitude}
-                lng={data.longitude}
-                onClick={() => sendLocation(data.name)}
-              >
-                {data.name}
-              </button>
-            ))
-          }
+          {data.stations.map((data, index) => (
+            <button
+              key={index}
+              lat={data.latitude}
+              lng={data.longitude}
+              onClick={() => sendLocation(data.name)}
+            >
+              {data.name}
+            </button>
+          ))}
         </GoogleMapReact>
-      </div >
+      </div>
     )
   }
 }
 
-export default Maps;
+// Statically extract your query, this prevents it from being
+// recreated on every render.
+const query = gql`
+  query allStations {
+    stations {
+      latitude
+      longitude
+      name
+    }
+  }
+`
+
+// Refactored version
+const Maps = ({ center, zoom, handler }) => {
+  const [res] = useQuery({
+    query
+  })
+
+  const sendLocation = name => handler(name)
+
+  if (res.fetching) return "Loading"
+  if (res.error) return "Error"
+
+  return (
+    <div
+      className="map"
+      style={{ height: "100vh", width: "100vw", position: "relative" }}
+    >
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: "AIzaSyCiaKYomT-1e-Pe1l_D6cRDvwXsxCEhu-I" }}
+        defaultCenter={center}
+        defaultZoom={zoom}
+      >
+        {res.data.stations.map((data, index) => (
+          <button
+            key={index}
+            lat={data.latitude}
+            lng={data.longitude}
+            onClick={() => sendLocation(data.name)}
+          >
+            {data.name}
+          </button>
+        ))}
+      </GoogleMapReact>
+    </div>
+  )
+}
+
+export default Maps

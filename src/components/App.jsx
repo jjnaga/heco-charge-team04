@@ -17,6 +17,8 @@ import "../css/App.css"
  * Going forward, I would always recommend functional and hook based
  * components over their class counterparts. Below this component is an alternative implementation using function components and hooks.
  */
+
+// Old version
 class _App extends Component {
   // Unless you need access to props, to initialize your state,
   // you don't really need a constructor() in a class component.
@@ -112,7 +114,7 @@ const query = gql`
   }
 `
 
-// Sample refactored hooks based component
+// Refactored hooks version
 const App = () => {
   const [state, setState] = useState({
     center: {
@@ -144,6 +146,8 @@ const App = () => {
   })
 
   const updateStationData = newLocation => {
+    // Note that when you call setState with hooks, you MUST spread
+    // the old state, even if you are only updating one new value.
     setState(prevState => ({ ...prevState, location: newLocation }))
   }
 
