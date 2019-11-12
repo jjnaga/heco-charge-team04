@@ -72,7 +72,7 @@ const Reconcilliation = ({ toggle }) => {
   return (
     <Container className="reconcile">
       <Item.Group divided>
-        {data.chargedata_reconcile.reconcileData.map(row => {
+        {data.chargedata_reconcile.map(row => {
           const { station, starttime, id } = row
           const startDate = new Date(starttime)
 
