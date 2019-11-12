@@ -124,7 +124,7 @@ const Overview = ({ stationData, toggleReconcile, toggleChart }) => {
             <Item key={id}>
               <Item.Content>
                 <Item.Header as="a">{station}</Item.Header>
-                <Item.Meta>{`${startDate.toLocaleString()}`}</Item.Meta>
+                <Item.Meta>{startDate.toLocaleString()}</Item.Meta>
               </Item.Content>
             </Item>
           )
