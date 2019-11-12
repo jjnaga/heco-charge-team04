@@ -40,6 +40,9 @@ class _App extends Component {
   //
   // In addition, this is improper variable usage in GraphQL. See the urql docs
   // on how to properly inject variables into GraphQL queries.
+  //
+  // One last thing, if it all possible, try to avoid promises and
+  // use async/await instead. Much easier to understand/use imho.
   updateStationData = location => {
     const [{ data }] = useQuery({
       query: `{chargedata(where: {station: {_eq: ${location}}}) { starttime, endtime, duration, energy, amount }}`
@@ -138,7 +141,7 @@ const App = () => {
     location
   } = state
   // This hook and query will re-run anytime `state.location` changes automatically!
-  const [response] = useQuery({
+  const [{ data, fetching, error }] = useQuery({
     query,
     variables: {
       location
@@ -166,11 +169,8 @@ const App = () => {
   }
 
   // Since we are returning, we don't need to use an else/if
-  if (response.fetching) return "Loading..."
-  if (response.error) return "An error occurred."
-
-  // response.data will have all your data.
-  console.log(response.data)
+  if (fetching) return "Loading..."
+  if (error) return "An error occurred."
 
   return (
     <Flexbox>
