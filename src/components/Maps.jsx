@@ -52,7 +52,7 @@ const Maps = ({ center, zoom, handler }) => {
       // TODO 11/5: nvm we can, we just need to wrap child component paramater in an object
       // FROM: const App = (name) =>
       // TO:   const App = ({name}) =>
-      <div className="map" style={{ height: '100vh', width: "100vw", position: "relative" }}>
+      <div className="map" style={{ height: '100vh', width: "100vw", zIndex: "1", position: "relative" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyCiaKYomT-1e-Pe1l_D6cRDvwXsxCEhu-I" }}
           defaultCenter={center}

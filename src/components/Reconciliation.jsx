@@ -34,7 +34,6 @@ const Reconcilliation = ({ toggle }) => {
 
   else {
     let reconcileData = data.chargedata_reconcile;
-    console.log(reconcileData);
 
     return (
       <Container className="reconcile" >
@@ -49,11 +48,15 @@ const Reconcilliation = ({ toggle }) => {
                 <Item.Content>
                   <Item.Header as='a'>{station}</Item.Header>
                   <Item.Meta>{`${starttime.toLocaleString()}`}</Item.Meta>
+                  <Item.Content>{energy}</Item.Content>
                 </Item.Content>
               </Item>
             )
           })}
         </Item.Group>
+        <div>
+          table
+        </div>
       </Container>
     )
   }
@@ -69,13 +72,14 @@ const Reconcilliation = ({ toggle }) => {
 // `;
 
 const Container = styled.div`
+  position: relative;
   margin: 25px;
   padding: 10px;
   height: 95vh;
   width: 30vw;
   top: 0;
-  z-index: 1;
   background: white;
+  z-index: 2;
   border-radius: 20px;
 
 

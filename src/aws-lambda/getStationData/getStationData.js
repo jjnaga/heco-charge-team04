@@ -1,4 +1,4 @@
-const data = require('./db.js');
+const data = require('./db-archive2.js');
 const { request } = require('graphql-request');
 const axios = require("axios");
 
@@ -33,6 +33,7 @@ async function mainFunction() {
   // exports.handler = async (event, context) => {
   let epoch;
   const endpoint = "https://charge-data.herokuapp.com/v1/graphql";
+  const data = require("./db.js");
 
   /** read epoch from DB */
   await request(endpoint, readQuery)
@@ -82,8 +83,6 @@ async function mainFunction() {
       }
     }
   }
-  console.log(`${newDataToPushToServer.length} new transactions`);
-  console.log(newDataToPushToServer);
 
   // if there are any updates, send to checkNewInsert() lambda.
   if (newDataToPushToServer.length > 0) {
@@ -91,16 +90,11 @@ async function mainFunction() {
       data: newDataToPushToServer
     }).then(data => {
       console.log(`Data Sent: ${data}`);
+      console.log("POST succesfull.")
     })
-    // .then(res => {
-    //   console.log("POST succesfull.")
-    //   console.log(res);
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    // });
+      .catch(err => {
+        console.log(err);
+      });
   }
 }
 
-
-mainFunction();

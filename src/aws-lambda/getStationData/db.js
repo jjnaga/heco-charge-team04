@@ -351,4 +351,4 @@ const data = [
   ['A', 'MOBILE', '11/20/19 13:30:52', '11/20/19 14:16:45', '00:45:53', '31.67', '$15.51', '3302406', 'DCCOMBOTYP1', 'RFID'],
 ];
 
-export default data;
+module.exports = { data };

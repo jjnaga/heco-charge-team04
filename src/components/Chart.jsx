@@ -89,19 +89,20 @@ class Chart extends React.Component {
 // `;
 
 const Container = styled.div`
-          margin: 25px;
-          padding: 10px;
-          height: 95vh;
-          top: 0;
-          z-index: 1;
-          background: white;
-          border-radius: 20px;
-        
-        
-          // flexbox
-          display: flex;
-          flex-direction: column;
-        `;
+  position: relative;
+  margin: 25px;
+  z-index: 2;
+  padding: 10px;
+  height: 95vh;
+  top: 0;
+  background: white;
+  border-radius: 20px;
+
+
+  // flexbox
+  display: flex;
+  flex-direction: column;
+`;
 
 
 export default Chart;

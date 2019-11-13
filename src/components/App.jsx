@@ -37,7 +37,6 @@ class App extends Component {
     );
   }
 
-
   toggleReconcilliation() {
     this.setState(prevState => ({ showReconcilliation: !prevState.showReconcilliation }));
   }
@@ -107,12 +106,10 @@ const Content = styled.div`
 
 const FlexLeft = styled.div`
   width: 300px;
-  z-index: 1;
 `;
 
 const FlexRight = styled.div`
   flex-grow: 1;
-  z-index: 1;
 `;
 
 export default App;

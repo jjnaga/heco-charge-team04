@@ -14,7 +14,6 @@ exports.handler = function (event, context) {
   let begRange = new Date(epoch * 1000);
   let endRange = new Date(fifteenMinEpochUpdate * 1000);
 
-  console.log("fuck");
   // with epoch, and fifteenMinEpochUpdate, we have a range where 
   // data < epoch is old
   // data > fifteenMinEpoch is future data

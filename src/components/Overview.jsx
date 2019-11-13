@@ -2,6 +2,8 @@ import React from 'react';
 import { Popup, Progress, Header, Button, Item } from "semantic-ui-react";
 import PropTypes from 'prop-types';
 import styled from "styled-components";
+import Clock from "react-live-clock";
+import Usage from "./Usage"
 import { useQuery } from "urql";
 
 const getRecentData = `
@@ -17,8 +19,16 @@ const getRecentData = `
   }
 `;
 
+const getHealthData = `
+  stations {
+    name
+    numPorts
+    portsInUse
+  }
+`;
+
 const Overview = ({ stationData, toggleReconcile, toggleChart }) => {
-  const [{ fetching, error, data }] = useQuery({ query: getRecentData });
+  let [{ fetching, error, data }] = useQuery({ query: getRecentData });
   if (fetching) return "Fetching";
   else if (error) {
     console.log(error);
@@ -31,11 +41,9 @@ const Overview = ({ stationData, toggleReconcile, toggleChart }) => {
     return (
       <Container>
         <Header size="large">HECO Monitoring</Header>
-        <Popup content="test" position="bottom right" offset="50, 0px"
-          trigger={
-            <Progress percent={44} progress color="red">Overall Health</Progress>
-          }
-        />
+        <Header size="medium"><Clock format={'hh:mm:ss'} ticking={true} timezone={'Pacific/Honolulu'} /> </Header>
+
+        <Usage></Usage>
         <Progress percent={25} progress color="green">Overall Congestion</Progress>
         <Header size="small">Recent Transactions</Header>
         <Item.Group divided>
@@ -67,22 +75,23 @@ const Overview = ({ stationData, toggleReconcile, toggleChart }) => {
 }
 
 const Container = styled.div`
-  margin: 25px;
-  padding: 10px;
-  height: 95vh;
-  top: 0;
-  z-index: 1;
-  background: white;
-  border-radius: 20px;
-
-  // flexbox
-  display: flex;
-  flex-direction: column;
-  `;
+      position: relative;
+      margin: 25px;
+      padding: 10px;
+      height: 95vh;
+      top: 0;
+      background: white;
+      z-index: 2;
+      border-radius: 20px;
+    
+      // flexbox
+      display: flex;
+      flex-direction: column;
+      `;
 
 const Menu = styled.div`
-  margin-top: auto;
-  `;
+      margin-top: auto;
+      `;
 
 
 Overview.propTypes = {
