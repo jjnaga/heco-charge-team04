@@ -1,14 +1,14 @@
-heco-bucket-hawaii
+heco-bucket-hawaii 
 
 
 
 
 
 
-
-
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Members
+- Damien
+- Ian
+- Jeremy
 
 ## Available Scripts
 
