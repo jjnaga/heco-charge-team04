@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import { Popup, Progress, Header, Button, Item, Form, Checkbox } from "semantic-ui-react";
 import PropTypes from 'prop-types';
@@ -27,7 +27,7 @@ const getReconcileData = `
 
 const Reconcilliation = ({ toggle }) => {
   const [{ fetching, error, data }] = useQuery({ query: getReconcileData });
-
+  const [r_energy, setEnergy] = useState(0);
   if (fetching) return "Fetching";
   else if (error) {
     console.log(error);
@@ -59,12 +59,12 @@ const Reconcilliation = ({ toggle }) => {
             //on submission mutate the db
             const handleSubmit = () => {
              // const [{ fetching, error, data }] = useQuery({ query: mutateReconcileData });
-              alert(`id:\"${id}\" submitted`);
+              alert(`id:\"${energy}\" submitted`);
+            }
+            const handleEnergyChange = (e) => {
+              setEnergy({e});
             }
             //on change update props
-            const handleChange = () => {
-              
-            }
             return (
               <Item>
                 <Item.Content>
@@ -75,15 +75,15 @@ const Reconcilliation = ({ toggle }) => {
                 <Form>
                 <Form.Field>
                   <label>Energy = {energy}</label>
-                  <input placeholder='Energy' />
+                  <input type="text" name="energy" placeholder="Energy" onChange={e => handleEnergyChange} />
                 </Form.Field>
                 <Form.Field>
                   <label>Duration = {duration}</label>
-                  <input placeholder='Duration' />
+                  <input placeholder='Duration'/>
                 </Form.Field>
                 <Form.Field>
                   <label>Amount = {amount}</label>
-                  <input placeholder='Amount' />
+                  <input placeholder='Amount'/>
                 </Form.Field>
                 <button onClick={handleSubmit}>Submit</button>
               </Form>
