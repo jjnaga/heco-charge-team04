@@ -28,6 +28,8 @@ const getReconcileData = `
 const Reconcilliation = ({ toggle }) => {
   const [{ fetching, error, data }] = useQuery({ query: getReconcileData });
   const [r_energy, setEnergy] = useState(0);
+  const [r_duration, setDuration] = useState(0);
+  const [r_amount, setAmount] = useState(0);
   if (fetching) return "Fetching";
   else if (error) {
     console.log(error);
@@ -49,7 +51,7 @@ const Reconcilliation = ({ toggle }) => {
               mutation updateReconcile {
                 _typename
                 update_chargedata_reconcile(where: {id: {_eq: \"${id}\"}}, 
-                _set: {amount: "${amount}", duration: "${duration}", energy: "${energy}"}) {
+                _set: {amount: "${r_amount}", duration: "${r_duration}", energy: "${r_energy}"}) {
                     returning {
                       id
                     }
@@ -59,10 +61,16 @@ const Reconcilliation = ({ toggle }) => {
             //on submission mutate the db
             const handleSubmit = () => {
              // const [{ fetching, error, data }] = useQuery({ query: mutateReconcileData });
-              alert(`id:\"${energy}\" submitted`);
+              alert(`id:\"${id}\" "${r_energy}\""${r_amount}\""${r_duration}\"submitted`);
             }
-            const handleEnergyChange = (e) => {
-              setEnergy({e});
+            const handleEnergyChange = e => {
+              setEnergy(e.target.value);
+            }
+            const handleDurationChange = e => {
+              setDuration(e.target.value);
+            }
+            const handleAmountChange = e => {
+              setAmount(e.target.value);
             }
             //on change update props
             return (
@@ -75,15 +83,15 @@ const Reconcilliation = ({ toggle }) => {
                 <Form>
                 <Form.Field>
                   <label>Energy = {energy}</label>
-                  <input type="text" name="energy" placeholder="Energy" onChange={e => handleEnergyChange} />
+                  <input type="text" name="energy" placeholder="Energy" onChange={handleEnergyChange} />
                 </Form.Field>
                 <Form.Field>
                   <label>Duration = {duration}</label>
-                  <input placeholder='Duration'/>
+                  <input type="text" name="duration" placeholder="Duration" onChange={handleDurationChange} />
                 </Form.Field>
                 <Form.Field>
                   <label>Amount = {amount}</label>
-                  <input placeholder='Amount'/>
+                  <input type="text" name="amount" placeholder="Amount" onChange={handleDurationChange} />
                 </Form.Field>
                 <button onClick={handleSubmit}>Submit</button>
               </Form>
