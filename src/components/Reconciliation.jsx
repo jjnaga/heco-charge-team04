@@ -49,16 +49,16 @@ const Reconcilliation = ({ toggle }) => {
               mutation updateReconcile {
                 _typename
                 update_chargedata_reconcile(where: {id: {_eq: \"${id}\"}}, 
-                _set: {amount: "\"${amount}\"", duration"\"${duration}\"", energy"\"${energy}\""}) {
+                _set: {amount: "${amount}", duration: "${duration}", energy: "${energy}"}) {
                     returning {
-                      \"${id}\"
+                      id
                     }
                 }
               }
             `;
             //on submission mutate the db
             const handleSubmit = () => {
-              //const [{ fetching, error, data }] = useQuery({ query: mutateReconcileData });
+             // const [{ fetching, error, data }] = useQuery({ query: mutateReconcileData });
               alert(`id:\"${id}\" submitted`);
             }
             //on change update props
