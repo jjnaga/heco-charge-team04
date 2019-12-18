@@ -24,6 +24,8 @@ Using Google Maps to provide a graphical interface, we were able to showcase the
 
 Using a built in tracker in React which allows to get the width and height of the screen at any time, we were able to create a Mobile-Friendly version of our site. We set the parameters to 500 pixels, such that any screen with a lower pixel count will display the mobile site.
 
+![App overview](mobile.png)
+
 The mobile site varies from the desktop version in that we don't display the map. Upon testing, we noticed that the limitations of a low width screen distorted the island of Oahu to where buttons were not feasibly intractable. We decided that this information, while useful on the Desktop, will not provide the same level of useful information. Using this guideline, we were able to tailor our mobile version to what we expect is needed from the managerial level at HECO. 
 
 ## Technology Stack
