@@ -16,7 +16,7 @@ import { useQuery } from "urql";
 
 const getRecentData = `
   query getRecentData {
-    chargedata(limit: 5, order_by: {endtime: desc}) {
+    chargedata(limit: 10, order_by: {endtime: desc}) {
       station
       id
       starttime
@@ -43,19 +43,29 @@ const Trans = ({ toggle }) => {
     return "error";
   } else {
     let chargedata = data.chargedata;
+    console.log("testetstest");
     console.log(chargedata);
-    return <Container />;
+    return (
+      <Container>
+        <Card.Group>
+          {chargedata.map(row => {
+            let { station, duration, starttime, endtime, energy, id } = row;
+            starttime = new Date(starttime);
+            return (
+              <Card>
+                <Card.Content>
+                  <Card.Header as="h1">{id}</Card.Header>
+                  <Card.Meta>{`${starttime.toLocaleString()}`}</Card.Meta>
+                  <Card.Description>{energy}</Card.Description>
+                </Card.Content>
+              </Card>
+            );
+          })}
+        </Card.Group>
+      </Container>
+    );
   }
 };
-//
-// const ExitContainer = styled.div`
-//   margin-left: auto;
-// `;
-
-// const Header = styled.div`
-//   display: flex;
-//   width: 100%;
-// `;
 
 const Container = styled.div`
   position: relative;
