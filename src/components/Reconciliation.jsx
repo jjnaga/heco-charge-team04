@@ -60,17 +60,25 @@ const Reconcilliation = ({ toggle }) => {
             `;
             //on submission mutate the db
             const handleSubmit = () => {
-             // const [{ fetching, error, data }] = useQuery({ query: mutateReconcileData });
+            //  const [{ fetching, error, data }] = useQuery({ query: mutateReconcileData });
               alert(`id:\"${id}\" "${r_energy}\""${r_amount}\""${r_duration}\"submitted`);
             }
             const handleEnergyChange = e => {
+              if ((e.target.value).match(/\d+\.{0,1}\d{0,2}/g != null)) {
               setEnergy(e.target.value);
+              }
             }
             const handleDurationChange = e => {
-              setDuration(e.target.value);
+              if ((e.target.value).match(/\d?\d:[0-5]\d:[0-5]\d/g != null)) {
+                setDuration(e.target.value);
+              }
             }
             const handleAmountChange = e => {
+              if ((e.target.value).match(/\d+\.\d{2}/g != null)) {
               setAmount(e.target.value);
+              }
+              else
+                alert(e.target.value," is in an invalid format");
             }
             //on change update props
             return (
@@ -91,7 +99,7 @@ const Reconcilliation = ({ toggle }) => {
                 </Form.Field>
                 <Form.Field>
                   <label>Amount = {amount}</label>
-                  <input type="text" name="amount" placeholder="Amount" onChange={handleDurationChange} />
+                  <input type="text" name="amount" placeholder="Amount" onChange={handleAmountChange} />
                 </Form.Field>
                 <button onClick={handleSubmit}>Submit</button>
               </Form>
