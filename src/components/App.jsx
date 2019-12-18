@@ -1,4 +1,5 @@
 /**
+ * Mobile Tutorial: https://goshakkk.name/different-mobile-desktop-tablet-layouts-react/
  * Stateless: https://medium.com/@npverni/how-to-declare-react-components-in-2017-2a90d9f7984c
  https://medium.com/tkssharma/build-graphql-application-with-node-js-react-js-part-2-404cd93c357b* 
  */
@@ -8,6 +9,7 @@ import Chart from "./Chart";
 import Trans from "./Trans";
 import Overview from "./Overview";
 import Reconcilliation from "./Reconciliation";
+import MobileOverview from "./MobileOverview";
 import styled from "styled-components";
 import { useQuery } from "urql";
 import "../css/App.css";
@@ -24,13 +26,25 @@ class App extends Component {
       showReconcilliation: false,
       showChart: false,
       showTrans: false,
-      stationData: null
+      stationData: null,
+      width: window.innerWidth
     };
     this.updateStationData = this.updateStationData.bind(this);
     this.toggleReconcilliation = this.toggleReconcilliation.bind(this);
     this.toggleChart = this.toggleChart.bind(this);
     this.toggleTrans = this.toggleTrans.bind(this);
   }
+
+  componentWillMount() {
+    window.addEventListener("resize", this.handleWindowSizeChange);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
 
   updateStationData(location) {
     const [{ data }] = useQuery({
@@ -59,43 +73,55 @@ class App extends Component {
       showChart,
       showReconcilliation,
       stationData,
-      showTrans
+      showTrans,
+      width
     } = this.state;
-
-    return (
-      <div>
-        {/* flexbox to center two containers */}
-        <Flexbox>
-          <Overlay>
-            <Maps
-              center={center}
-              zoom={zoom}
-              handler={this.updateStationData}
-            />
-          </Overlay>
-          <Content>
-            <FlexLeft>
-              <Overview
-                data={stationData}
-                toggleReconcile={this.toggleReconcilliation}
-                toggleChart={this.toggleChart}
-                toggleTrans={this.toggleTrans}
+    const isMobile = width <= 500;
+    if (isMobile) {
+      return (
+        <MobileOverview
+          data={stationData}
+          toggleReconcile={this.toggleReconcilliation}
+          toggleChart={this.toggleChart}
+          toggleTrans={this.toggleTrans}
+        />
+      );
+    } else {
+      return (
+        <div>
+          {/* flexbox to center two containers */}
+          <Flexbox>
+            <Overlay>
+              <Maps
+                center={center}
+                zoom={zoom}
+                handler={this.updateStationData}
               />
-            </FlexLeft>
-            <FlexRight>
-              {/* only show reconciliation when 'showReconcilliation' is true */}
-              {showReconcilliation && (
-                <Reconcilliation toggle={this.toggleReconcilliation} />
-              )}
-              {/* only show reconciliation when 'showReconcilliation' is true */}
-              {showChart && <Chart toggle={this.toggleReconcilliation} />}
-              {/* only show Transactions when 'transactions' is true */}
-              {showTrans && <Trans toggle={this.toggleTrans} />}
-            </FlexRight>
-          </Content>
-        </Flexbox>
-      </div>
-    );
+            </Overlay>
+            <Content>
+              <FlexLeft>
+                <Overview
+                  data={stationData}
+                  toggleReconcile={this.toggleReconcilliation}
+                  toggleChart={this.toggleChart}
+                  toggleTrans={this.toggleTrans}
+                />
+              </FlexLeft>
+              <FlexRight>
+                {/* only show reconciliation when 'showReconcilliation' is true */}
+                {showReconcilliation && (
+                  <Reconcilliation toggle={this.toggleReconcilliation} />
+                )}
+                {/* only show reconciliation when 'showReconcilliation' is true */}
+                {showChart && <Chart toggle={this.toggleReconcilliation} />}
+                {/* only show Transactions when 'transactions' is true */}
+                {showTrans && <Trans toggle={this.toggleTrans} />}
+              </FlexRight>
+            </Content>
+          </Flexbox>
+        </div>
+      );
+    }
   }
 }
 
