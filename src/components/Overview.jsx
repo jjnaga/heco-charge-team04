@@ -52,7 +52,6 @@ const Overview = ({
           />{" "}
         </Header>
 
-        <Usage />
         <Progress percent={25} progress color="green">
           Overall Congestion
         </Progress>
