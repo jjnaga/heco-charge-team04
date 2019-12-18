@@ -1,5 +1,6 @@
 import React from "react";
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact from "google-map-react";
+import { Card, Icon } from "semantic-ui-react";
 import { useQuery } from "urql";
 
 // const Maps = (center, zoom) => (
@@ -29,14 +30,13 @@ import { useQuery } from "urql";
 // )
 
 const Maps = ({ center, zoom, handler }) => {
-
-  const sendLocation = (name) => {
+  const sendLocation = name => {
     console.log("working");
     handler(name);
-  }
+  };
 
   const [res] = useQuery({
-    query: `{stations {latitude, longitude, name}}`,
+    query: `{stations {latitude, longitude, name}}`
   });
 
   const { fetching, error, data } = res;
@@ -45,35 +45,37 @@ const Maps = ({ center, zoom, handler }) => {
   } else if (error) {
     console.log(`Error Message: ${error}`);
     return "Error";
-  }
-  else {
+  } else {
     return (
       // TODO 11/5: we can't iterate components as far as I can tell, and this sucks.
       // TODO 11/5: nvm we can, we just need to wrap child component paramater in an object
       // FROM: const App = (name) =>
       // TO:   const App = ({name}) =>
-      <div className="map" style={{ height: '100vh', width: "100vw", zIndex: "1", position: "relative" }}>
+      <div
+        className="map"
+        style={{
+          height: "100vh",
+          width: "100vw",
+          zIndex: "1",
+          position: "relative"
+        }}
+      >
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyCiaKYomT-1e-Pe1l_D6cRDvwXsxCEhu-I" }}
           defaultCenter={center}
           defaultZoom={zoom}
         >
-          {
-            data.stations.map((data, index) => (
-              <button
-                key={index}
-                lat={data.latitude}
-                lng={data.longitude}
-                onClick={() => sendLocation(data.name)}
-              >
+          {data.stations.map((data, index) => (
+            <div key={index} lat={data.latitude} lng={data.longitude}>
+              <button onClick={() => sendLocation(data.name)}>
                 {data.name}
               </button>
-            ))
-          }
+            </div>
+          ))}
         </GoogleMapReact>
-      </div >
-    )
+      </div>
+    );
   }
-}
+};
 
 export default Maps;

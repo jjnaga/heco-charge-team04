@@ -2,14 +2,15 @@
  * Stateless: https://medium.com/@npverni/how-to-declare-react-components-in-2017-2a90d9f7984c
  https://medium.com/tkssharma/build-graphql-application-with-node-js-react-js-part-2-404cd93c357b* 
  */
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Maps from "./Maps";
 import Chart from "./Chart";
+import Trans from "./Trans";
 import Overview from "./Overview";
 import Reconcilliation from "./Reconciliation";
 import styled from "styled-components";
 import { useQuery } from "urql";
-import '../css/App.css';
+import "../css/App.css";
 
 class App extends Component {
   constructor(props) {
@@ -17,36 +18,49 @@ class App extends Component {
     this.state = {
       center: {
         lat: 21.475,
-        lng: -158.10
+        lng: -158.1
       },
       zoom: 11,
       showReconcilliation: false,
       showChart: false,
-      stationData: null,
-    }
+      showTrans: false,
+      stationData: null
+    };
     this.updateStationData = this.updateStationData.bind(this);
     this.toggleReconcilliation = this.toggleReconcilliation.bind(this);
     this.toggleChart = this.toggleChart.bind(this);
+    this.toggleTrans = this.toggleTrans.bind(this);
   }
 
   updateStationData(location) {
     const [{ data }] = useQuery({
-      query: `{chargedata(where: {station: {_eq: ${location}}}) { starttime, endtime, duration, energy, amount }}`,
-    }).then(
-      this.setState(prevState => ({ stationData: data.data }))
-    );
+      query: `{chargedata(where: {station: {_eq: ${location}}}) { starttime, endtime, duration, energy, amount }}`
+    }).then(this.setState(prevState => ({ stationData: data.data })));
   }
 
   toggleReconcilliation() {
-    this.setState(prevState => ({ showReconcilliation: !prevState.showReconcilliation }));
+    this.setState(prevState => ({
+      showReconcilliation: !prevState.showReconcilliation
+    }));
   }
 
   toggleChart() {
     this.setState(prevState => ({ showChart: !prevState.showChart }));
   }
 
+  toggleTrans() {
+    this.setState(prevState => ({ showTrans: !prevState.showTrans }));
+  }
+
   render() {
-    const { center, zoom, showChart, showReconcilliation, stationData } = this.state;
+    const {
+      center,
+      zoom,
+      showChart,
+      showReconcilliation,
+      stationData,
+      showTrans
+    } = this.state;
 
     return (
       <div>
@@ -61,26 +75,26 @@ class App extends Component {
           </Overlay>
           <Content>
             <FlexLeft>
-              <Overview data={stationData} toggleReconcile={this.toggleReconcilliation} toggleChart={this.toggleChart} />
+              <Overview
+                data={stationData}
+                toggleReconcile={this.toggleReconcilliation}
+                toggleChart={this.toggleChart}
+                toggleTrans={this.toggleTrans}
+              />
             </FlexLeft>
             <FlexRight>
               {/* only show reconciliation when 'showReconcilliation' is true */}
-              {showReconcilliation &&
-                <Reconcilliation
-                  toggle={this.toggleReconcilliation}
-                />
-              }
+              {showReconcilliation && (
+                <Reconcilliation toggle={this.toggleReconcilliation} />
+              )}
               {/* only show reconciliation when 'showReconcilliation' is true */}
-              {showChart &&
-                <Chart
-                  toggle={this.toggleReconcilliation}
-                />
-              }
+              {showChart && <Chart toggle={this.toggleReconcilliation} />}
+              {/* only show Transactions when 'transactions' is true */}
+              {showTrans && <Trans toggle={this.toggleTrans} />}
             </FlexRight>
           </Content>
         </Flexbox>
-
-      </div >
+      </div>
     );
   }
 }
@@ -95,8 +109,6 @@ const Flexbox = styled.div`
 const Overlay = styled.div`
   grid-area: 1/1;
 `;
-
-
 
 const Content = styled.div`
   grid-area: 1/1;
