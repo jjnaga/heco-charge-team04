@@ -1,4 +1,5 @@
-heco-bucket-hawaii 
+
+### HECO Charge 
 
 
 
@@ -10,69 +11,51 @@ Members
 - Ian
 - Jeremy
 
-## Available Scripts
+## Mission Statement
+HECO Charge is a monitoring system that checks every transaction for errors. Our project was born out of a conversation with the lead manager for the HECO Charging Station unit. Their team had to manually generate reports every month, and look through each transaction individually for any errors. We saw a great opportunity to automate this process for HECO, with the end result being 'HECO Charge'.
 
-In the project directory, you can run:
+![App overview](app.png)
 
-### `npm start`
+### `Google Maps`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Using Google Maps to provide a graphical interface, we were able to showcase the various charging stations throughout Oahu. A modified version of google-maps-react was used to place interactive stations, that when clicked will expand into a detailed list of the specified station. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### `Mobile Version`
 
-### `npm test`
+Using a built in tracker in React which allows to get the width and height of the screen at any time, we were able to create a Mobile-Friendly version of our site. We set the parameters to 500 pixels, such that any screen with a lower pixel count will display the mobile site.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The mobile site varies from the desktop version in that we don't display the map. Upon testing, we noticed that the limitations of a low width screen distorted the island of Oahu to where buttons were not feasibly intractable. We decided that this information, while useful on the Desktop, will not provide the same level of useful information. Using this guideline, we were able to tailor our mobile version to what we expect is needed from the managerial level at HECO. 
 
-### `npm run build`
+## Technology Stack
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `AWS`
+
+The primary processing is done using AWS Lambda. We decided from the start to create this project serverless. Our primary motivation was purely educational, we wanted to test writing serverless code. We have two primary lambdas:
+
+- checkNewInsert
+Individually checks each transaction for any errors that needs to be manually corrected. This was our major milestone that we believed would provide the most use to HECO. 
+- getStationData
+We dedicated a majority of the time to simulating station data across multiple stations. This lambda will create data in any time range, using paramaters given from sample data. 
+
+### `PostgreSQL on Heroku`
+Our primary database was PostgreSQL. We leaned towards a modern database verus known traditional databases for performance reasons. AWS Lambda was able to perform around twice as fast versus Microsoft SQL Server from internal testing on Amazon, so we decided on PostgreSQL to improve our lambdas, and also to learn a new database.
+
+## How to setup enverionment
+
+
+### `npm install --save`
+
+Saves the dependencies used on project
+
+### `npm run`
+
+Runs local development on localhost
 
 ### `npm run eject`
+TBA: We planned on creating a custom Google Maps React plugin, but ran into numerous errors. However, in the event that you wish to test our custom plugin, please run the above command.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
